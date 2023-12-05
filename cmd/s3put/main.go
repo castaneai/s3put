@@ -40,6 +40,11 @@ func main() {
 	}
 
 	src := flag.Arg(0)
+	if src == "" {
+		flag.Usage()
+		os.Exit(2)
+	}
+
 	f, err := os.Open(src)
 	if err != nil {
 		log.Fatalf("failed to open input file('%s'): %+v", src, err)
@@ -48,6 +53,11 @@ func main() {
 
 	// e.g: s3://<bucket>/<key>
 	dst := flag.Arg(1)
+	if dst == "" {
+		flag.Usage()
+		os.Exit(2)
+	}
+
 	dstUrl, err := url.Parse(dst)
 	if err != nil {
 		log.Fatalf("failed to parse S3 URL('%s'): %+v", dst, err)
@@ -57,13 +67,12 @@ func main() {
 	if dstUrl.Scheme != "s3" || bucket == "" {
 		log.Fatalf("destination URL must be 's3://<bucket>/<key>' format")
 	}
-	res, err := s3.New(ss).PutObject(&s3.PutObjectInput{
+	if _, err := s3.New(ss).PutObject(&s3.PutObjectInput{
 		Bucket: &bucket,
 		Body:   f,
 		Key:    &key,
-	})
-	if err != nil {
+	}); err != nil {
 		log.Fatalf("failed to put object: %+v", err)
 	}
-	log.Printf("uploaded: %s", res)
+	log.Printf("uploaded")
 }
