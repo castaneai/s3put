@@ -13,7 +13,18 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
+const (
+	// set by goreleaser
+	// https://goreleaser.com/cookbooks/using-main.version/?h=ldflags
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 func main() {
+	log.SetFlags(0)
+	log.Printf("s3put %s, commit: %s, built at %s", version, commit, date)
+
 	var endpoint, region string
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, `Usage: %s [options...] <file> <s3url>
@@ -21,6 +32,8 @@ func main() {
 	Filepath to upload
   <s3url> string
 	URL of upload destination (s3://<bucket>/<key>)
+
+Options:
 `, os.Args[0])
 		flag.PrintDefaults()
 	}
