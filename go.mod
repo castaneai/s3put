@@ -1,6 +1,6 @@
 module github.com/castaneai/s3put
 
-go 1.21.3
+go 1.21
 
 require github.com/aws/aws-sdk-go v1.48.12
 
