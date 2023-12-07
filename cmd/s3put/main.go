@@ -13,7 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-const (
+var (
 	// set by goreleaser
 	// https://goreleaser.com/cookbooks/using-main.version/?h=ldflags
 	version = "dev"
